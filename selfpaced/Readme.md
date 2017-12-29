@@ -1,0 +1,1 @@
+aws cloudformation create-stack --stack-name pkn1 --template-body file://s3stack.template
