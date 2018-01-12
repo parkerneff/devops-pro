@@ -16,7 +16,7 @@ Parameters:
   DeploymentNameTag:
       Description: Unique name tag to give to the EC2 instance
       Type: String
-      Default: cf-tomcat
+      Default: cf-tomcat8
 
 
 Mappings:
@@ -28,7 +28,7 @@ Mappings:
     t2.medium: { Arch: HVM64 }
   AWSRegionArch2AMI:
     us-east-1:      { PV64 : ami-2a69aa47, HVM64 : ami-6869aa05, HVMG2 : ami-bb18efad   }
-    us-west-2:      { PV64 : ami-7f77b31f, HVM64 : ami-7172b611, HVMG2 : ami-31912f51   }
+    us-west-2:      { PV64 : ami-7f77b31f, HVM64 : ami-1f0abe67, HVMG2 : ami-31912f51   }
     us-west-1:      { PV64 : ami-a2490dc2, HVM64 : ami-31490d51, HVMG2 : ami-0a9dcf6a   }
     eu-west-1:      { PV64 : ami-4cdd453f, HVM64 : ami-f9dd458a, HVMG2 : ami-873e61e1   }
     eu-west-2:      { PV64 : NOT_SUPPORTED, HVM64 : ami-886369ec, HVMG2 : NOT_SUPPORTED }
@@ -88,24 +88,24 @@ Resources:
         InstallServices:
           packages:
             yum:
-              tomcat8: []
+              tomcat: []
           files:
-            /etc/httpd/conf.d/tomcatvh.conf:
+            /etc/cas/.readme:
               content: |
-                <VirtualHost *:80>
-                  ProxyPass / http://localhost:8080/
-                  ProxyPassReverse / http://localhost:8080/
-                </VirtualHost>
+                CAS Configuration Files
               mode: 000644
               owner: root
               group: root
-          services:
-            sysvinit:
-              tomcat8:
-                enabled: true
-                ensureRunning: true
+        services:
+          sysvinit:
+            tomcat:
+              enabled: true
+              ensureRunning: true
         configSets:
           default: [ InstallServices ]
+        commands:
+          start-tomcat:
+            command: "systemctl start tomcat.service"
     Properties:
       InstanceType: !Ref InstanceType
       SecurityGroups:
@@ -126,12 +126,6 @@ Resources:
               --stack ${AWS::StackName} \
               --resource TomcatInstance \
               --region ${AWS::Region}
-            # Install CodeDeploy agent
-            wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \
-                 -O /tmp/install-cda
-            chmod +x /tmp/install-cda
-            /tmp/install-cda auto
-            rm /tmp/install-cda
             /opt/aws/bin/cfn-signal -e $? \
               --stack ${AWS::StackName}   \
               --resource TomcatInstance   \
