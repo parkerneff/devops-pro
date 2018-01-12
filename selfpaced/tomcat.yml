@@ -17,10 +17,7 @@ Parameters:
       Description: Unique name tag to give to the EC2 instance
       Type: String
       Default: cf-tomcat
-  SubnetId:
-      Description: Subnet ID
-      Type: String
-      Default: subnet-14475172
+
 
 Mappings:
   AWSInstanceType2Arch:
@@ -111,7 +108,6 @@ Resources:
           default: [ InstallServices ]
     Properties:
       InstanceType: !Ref InstanceType
-      SubnetId: !Ref SubnetId
       SecurityGroups:
         - !Ref WebServerSecurityGroup
       KeyName: !Ref KeyName
