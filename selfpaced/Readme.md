@@ -14,8 +14,15 @@ aws cloudformation create-stack --stack-name wordpress --template-body file://wo
     ParameterKey=KeyName,ParameterValue=defaultkp \
     ParameterKey=DBUser,ParameterValue=wpuser \
     ParameterKey=DBPassword,ParameterValue=wppassword \
-    ParameterKey=DBRootPassword,ParameterValue=wppassword \
-    --notification-arns arn:aws:sns:us-west-2:557007704540:messages
+    ParameterKey=DBRootPassword,ParameterValue=wppassword \   
+    --stack-policy-url s3://parkerneff-icloud-cf-templates/wordpress-policy.json
     
 cloudformation delete-stack --stack-name wordpress    
+
+
+
+aws s3 cp wordpress-policy.json s3://parkerneff-icloud-cf-templates/wordpress-policy.json
+
+
+aws cloudformation create-stack --capabilities CAPABILITY_IAM --stack-name cas --template-body file://tomcat.yml
     
