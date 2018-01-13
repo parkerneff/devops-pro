@@ -25,4 +25,7 @@ aws s3 cp wordpress-policy.json s3://parkerneff-icloud-cf-templates/wordpress-po
 
 
 aws cloudformation create-stack --capabilities CAPABILITY_IAM --stack-name cas --template-body file://tomcat.yml
+
+
+https://github.com/parkerneff/devops-pro/tarball/master
     
