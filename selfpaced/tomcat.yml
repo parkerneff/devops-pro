@@ -96,16 +96,13 @@ Resources:
               mode: 000644
               owner: root
               group: root
-        services:
-          sysvinit:
-            tomcat:
-              enabled: true
-              ensureRunning: true
+          services:
+            sysvinit:
+              tomcat:
+                enabled: true
+                ensureRunning: true
         configSets:
           default: [ InstallServices ]
-        commands:
-          start-tomcat:
-            command: "systemctl start tomcat.service"
     Properties:
       InstanceType: !Ref InstanceType
       SecurityGroups:
