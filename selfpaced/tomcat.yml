@@ -89,13 +89,8 @@ Resources:
           packages:
             yum:
               tomcat: []
-          files:
-            /etc/cas/.readme:
-              content: |
-                CAS Configuration Files
-              mode: 000644
-              owner: root
-              group: root
+          sources:
+            /etc/cas: "https://github.com/parkerneff/cas-config/tarball/master"
           services:
             sysvinit:
               tomcat:
