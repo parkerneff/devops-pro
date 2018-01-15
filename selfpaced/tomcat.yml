@@ -45,7 +45,7 @@ Mappings:
 
 Resources:
 
-  TomcatInstanceServiceRole:
+  CasInstanceServiceRole:
       Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
@@ -71,15 +71,15 @@ Resources:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
-        - !Ref TomcatInstanceServiceRole
+        - !Ref CasInstanceServiceRole
 
-  WebServerSecurityGroup:
+  CasServerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Enable SSH and HTTP access
       SecurityGroupIngress:
         - { IpProtocol: tcp, FromPort: 22, ToPort: 22, CidrIp: 0.0.0.0/0 }
-        - { IpProtocol: tcp, FromPort: 80, ToPort: 80, CidrIp: 0.0.0.0/0 }
+        - { IpProtocol: tcp, FromPort: 8080, ToPort: 8080, CidrIp: 0.0.0.0/0 }
 
   TomcatInstance:
     Type: AWS::EC2::Instance
@@ -90,7 +90,7 @@ Resources:
             yum:
               tomcat8: []
           sources:
-            /etc/cas: "https://github.com/parkerneff/cas-config/tarball/master"
+            /etc: "https://github.com/parkerneff/cas-config/tarball/work"
           services:
             sysvinit:
               tomcat8:
@@ -101,7 +101,7 @@ Resources:
     Properties:
       InstanceType: !Ref InstanceType
       SecurityGroups:
-        - !Ref WebServerSecurityGroup
+        - !Ref CasServerSecurityGroup
       KeyName: !Ref KeyName
       ImageId: !FindInMap [ AWSRegionArch2AMI, !Ref 'AWS::Region', !FindInMap [ AWSInstanceType2Arch, !Ref InstanceType, Arch ] ]
       IamInstanceProfile: !Ref IamInstanceProfile
