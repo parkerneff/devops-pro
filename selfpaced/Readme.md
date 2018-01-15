@@ -24,7 +24,7 @@ cloudformation delete-stack --stack-name wordpress
 aws s3 cp wordpress-policy.json s3://parkerneff-icloud-cf-templates/wordpress-policy.json
 
 
-aws cloudformation create-stack --capabilities CAPABILITY_IAM --stack-name cas --template-body file://tomcat.yml
+aws cloudformation create-stack --disable-rollback --capabilities CAPABILITY_IAM --stack-name parker-cas --template-body file://tomcat.yml
 
 
 https://github.com/parkerneff/devops-pro/tarball/master

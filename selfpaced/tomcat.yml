@@ -16,7 +16,7 @@ Parameters:
   DeploymentNameTag:
       Description: Unique name tag to give to the EC2 instance
       Type: String
-      Default: cf-tomcat8
+      Default: cf-tomcat-work
 
 
 Mappings:
@@ -28,7 +28,7 @@ Mappings:
     t2.medium: { Arch: HVM64 }
   AWSRegionArch2AMI:
     us-east-1:      { PV64 : ami-2a69aa47, HVM64 : ami-6869aa05, HVMG2 : ami-bb18efad   }
-    us-west-2:      { PV64 : ami-7f77b31f, HVM64 : ami-1f0abe67, HVMG2 : ami-31912f51   }
+    us-west-2:      { PV64 : ami-7f77b31f, HVM64 : ami-32cf7b4a, HVMG2 : ami-31912f51   }
     us-west-1:      { PV64 : ami-a2490dc2, HVM64 : ami-31490d51, HVMG2 : ami-0a9dcf6a   }
     eu-west-1:      { PV64 : ami-4cdd453f, HVM64 : ami-f9dd458a, HVMG2 : ami-873e61e1   }
     eu-west-2:      { PV64 : NOT_SUPPORTED, HVM64 : ami-886369ec, HVMG2 : NOT_SUPPORTED }
@@ -88,12 +88,12 @@ Resources:
         InstallServices:
           packages:
             yum:
-              tomcat: []
+              tomcat8: []
           sources:
             /etc/cas: "https://github.com/parkerneff/cas-config/tarball/master"
           services:
             sysvinit:
-              tomcat:
+              tomcat8:
                 enabled: true
                 ensureRunning: true
         configSets:
@@ -114,6 +114,8 @@ Resources:
           Fn::Sub: |
             #!/bin/bash -xe
             yum -y update
+            yum -y remove java-1.7.0
+            yum -y install java-1.8.0
             /opt/aws/bin/cfn-init -v    \
               --stack ${AWS::StackName} \
               --resource TomcatInstance \
@@ -122,6 +124,7 @@ Resources:
               --stack ${AWS::StackName}   \
               --resource TomcatInstance   \
               --region ${AWS::Region}
+
     CreationPolicy:
       ResourceSignal:
         Timeout: PT5M
