@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Build CAS Enviroment
+Parameters:
+  EnvironmentName:
+    Description: Enviroment Name
+    Type: String
+
+Resources:
+  CASVPCStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        KeyName: !Ref EnvironmentName
+     TemplateURL: https://s3-us-west-2.amazonaws.com/parkerneff-icloud-cf-templates/vpc.yml
+     TimeoutInMinutes: '2'
+
+  CASEC2Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        KeyName: !Ref KeyName
+        VPC: !Ref VPC
+        Subnet: !Ref Subnet
+        URL: !Ref URL
+      TemplateURL: https://s3-eu-west-1.amazonaws.com/learn-cloudformation/lab7-nested-stacks/ec2-stack.json
+      TimeoutInMinutes: '5'
