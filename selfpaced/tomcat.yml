@@ -91,6 +91,9 @@ Resources:
               tomcat8: []
           sources:
             /etc: "https://github.com/parkerneff/cas-config/tarball/work"
+          commands:
+            install-cas:
+              command: "aws s3 cp s3://parkerneff-software/cas.war /usr/share/tomcat8/webapps"
           services:
             sysvinit:
               tomcat8:
