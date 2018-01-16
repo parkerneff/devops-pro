@@ -24,7 +24,10 @@ cloudformation delete-stack --stack-name wordpress
 aws s3 cp wordpress-policy.json s3://parkerneff-icloud-cf-templates/wordpress-policy.json
 
 
-aws cloudformation create-stack --disable-rollback --capabilities CAPABILITY_IAM --stack-name parker-cas --template-body file://tomcat.yml
+aws cloudformation create-stack --disable-rollback --capabilities CAPABILITY_IAM --stack-name cas-stack --template-body file://tomcat.yml
+
+
+aws cloudformation create-stack  --stack-name cas-vpc1 --parameters ParameterKey=EnvironmentName,ParameterValue=dev --template-body file://vpc.yml
 
 
 https://github.com/parkerneff/devops-pro/tarball/master

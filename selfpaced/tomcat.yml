@@ -131,3 +131,11 @@ Resources:
     CreationPolicy:
       ResourceSignal:
         Timeout: PT5M
+
+Outputs:
+  InstanceID:
+    Description: The Instance ID
+    Value: !Ref TomcatInstance
+  PublicIPAddress:
+    Description: Public IP Address of EC2 Instance
+    Value: !GetAtt TomcatInstance.PublicIp
